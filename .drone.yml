@@ -6,6 +6,14 @@ pipeline:
       - npm start &
       - npm i nightwatch -g
       - cd test && nightwatch
+
+  notify:
+    image: eisenxu/drone-ketsu-notification
+    token: ${EXAM_ADMIN_TOKEN}
+    host: https://ketsu-backend.herokuapp.com
+    when:
+      status: [ success, failure ]
+      
 services:
   chromedriver:
     image: blueimp/chromedriver
