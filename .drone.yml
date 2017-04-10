@@ -1,0 +1,14 @@
+pipeline:
+  build:
+    image: node:6.10.2-alpine
+    commands:
+      - npm install
+      - npm start &
+      - npm i nightwatch -g
+      - cd test && nightwatch
+services:
+  chromedriver:
+    image: blueimp/chromedriver
+    environment:
+      - VNC_ENABLED=true
+      - EXPOSE_X11=true
