@@ -1,0 +1,7 @@
+freeze_files:
+    - test/
+    - package.json
+    - .drone.yml
+report_files:
+    - CHROME_57.0.2987.98_Linux_test.xml
+    - CHROME_57.0.2987.98_Linux_test2.xml

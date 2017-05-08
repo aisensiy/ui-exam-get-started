@@ -1,4 +1,13 @@
 pipeline:
+  restore-cache:
+    image: drillster/drone-volume-cache
+    restore: true
+    mount:
+      - ./node_modules
+    # Mount the cache volume, needs "Trusted"
+    volumes:
+      - /tmp/cache:/cache
+
   build:
     image: node:6.10.2-alpine
     commands:
@@ -7,13 +16,21 @@ pipeline:
       - npm i nightwatch -g
       - cd test && nightwatch
 
-  notify:
-    image: eisenxu/drone-ketsu-notification
-    token: ${EXAM_ADMIN_TOKEN}
-    host: https://ketsu-backend.herokuapp.com
-    when:
+  report:
+    image: eisenxu/junit-reportor
+    test_results: test/reports
+    when: 
       status: [ success, failure ]
-      
+  
+  rebuild-cache:
+    image: drillster/drone-volume-cache
+    rebuild: true
+    mount:
+      - ./node_modules
+    # Mount the cache volume, needs "Trusted"
+    volumes:
+      - /tmp/cache:/cache
+
 services:
   chromedriver:
     image: blueimp/chromedriver
